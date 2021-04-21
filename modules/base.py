@@ -70,6 +70,7 @@ class Module(metaclass=CommandConsolidator):
         self.lock = asyncio.Lock()
         self.FileRoot = os.path.dirname(os.path.realpath(__file__))
         self.RenderOut = f"{self.FileRoot}/../rendered"
+        if not os.path.isdir(self.RenderOut):os.mkdir(self.RenderOut)
 
     @property
     def bomb(self):
