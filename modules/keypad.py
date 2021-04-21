@@ -1,3 +1,4 @@
+import os
 import random
 import modules
 
@@ -13,7 +14,6 @@ class Keypad(modules.Module):
 
     def __init__(self, bomb, ident):
         super().__init__(bomb, ident)
-
         self.column = random.choice([
             ["q", "at", "lambda", "lightning", "kitty", "h", "mirrorc"],
             ["euro", "q", "mirrorc", "ce", "hollowstar", "h", "questionmark"],
@@ -39,10 +39,10 @@ class Keypad(modules.Module):
             f'<path stroke="#000" stroke-width="2" d="M5 5h338v338h-338z"/>'
             f'<path stroke="#000" d="M38 96h100v100h-100zM144 96h100v100h-100zM38 202h100v100h-100zM144 202h100v100h-100z"/>'
             f'<circle fill="{led}" stroke="#000" cx="298" cy="40.5" r="15" stroke-width="2"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[0]}.png" width="90" height="90" x="43" y="105"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[1]}.png" width="90" height="90" x="149" y="105"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[2]}.png" width="90" height="90" x="43" y="211"/>'
-            f'<image xlink:href="img/keypad/{self.buttons[3]}.png" width="90" height="90" x="149" y="211"/>'
+            f'<image xlink:href="{self.FileRoot}/../img/keypad/{self.buttons[0]}.png" width="90" height="90" x="43" y="105"/>'
+            f'<image xlink:href="{self.FileRoot}/../img/keypad/{self.buttons[1]}.png" width="90" height="90" x="149" y="105"/>'
+            f'<image xlink:href="{self.FileRoot}/../img/keypad/{self.buttons[2]}.png" width="90" height="90" x="43" y="211"/>'
+            f'<image xlink:href="{self.FileRoot}/../img/keypad/{self.buttons[3]}.png" width="90" height="90" x="149" y="211"/>'
             f'<path stroke="#000" fill="{self.led[0]}" stroke-width="2" d="M78 102h20v6h-20z"/>'
             f'<path stroke="#000" fill="{self.led[1]}" stroke-width="2" d="M184 102h20v6h-20z"/>'
             f'<path stroke="#000" fill="{self.led[2]}" stroke-width="2" d="M78 208h20v6h-20z"/>'

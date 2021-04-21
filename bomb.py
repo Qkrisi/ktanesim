@@ -34,6 +34,7 @@ class Bomb:
 
     @staticmethod
     async def update_presence():
+        return
         await Bomb.client.change_presence(activity=discord.Game(f"{len(Bomb.bombs)} bomb{'s' if len(Bomb.bombs) != 1 else ''}. {PREFIX}help for help"))
 
     @staticmethod

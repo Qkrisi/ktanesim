@@ -1,5 +1,6 @@
 from urllib.parse import quote as urlencode
 import io
+import os
 import cairosvg
 import discord
 import asyncio
@@ -67,6 +68,8 @@ class Module(metaclass=CommandConsolidator):
         self.last_img = None
         self.log_data = []
         self.lock = asyncio.Lock()
+        self.FileRoot = os.path.dirname(os.path.realpath(__file__))
+        self.RenderOut = f"{self.FileRoot}/../rendered"
 
     @property
     def bomb(self):
@@ -155,7 +158,8 @@ class Module(metaclass=CommandConsolidator):
             led = '#fff'
 
         # unsafe is needed to include bitmaps, and does not pose a security risk since the user has no control over the SVG
-        return cairosvg.svg2png(self.get_svg(led).encode(), unsafe=True), 'render.png'
+        index = len(os.listdir(self.RenderOut))+1
+        return cairosvg.svg2png(self.get_svg(led).encode(), unsafe=True), f'render{index}.png'
 
     @noparts
     async def cmd_view(self, author):
@@ -166,10 +170,15 @@ class Module(metaclass=CommandConsolidator):
         data, filename = await self.bomb.client.loop.run_in_executor(None, self.render, strike)
         end_time = time.time()
         print("Rendering took {:.2}s".format(end_time - start_time))
+        FilePath = f"{self.RenderOut}/{filename}"
+        with open(FilePath, "wb") as file:file.write(data)
         descr = f"[Manual]({self.get_manual()}). {self.get_help()}" if not self.solved else ''
-        embed = discord.Embed(title=str(self), description=descr)
-        embed.set_image(url=f"attachment://{filename}")
-        file_ = discord.File(io.BytesIO(data), filename=filename)
+        embed = {"title":str(self), "description":descr, "image":f"attachment://{filename}"}
+        #embed = discord.Embed(title=str(self), description=descr)
+        #embed.set_image(url=f"attachment://{filename}")
+
+        #file_ = discord.File(io.BytesIO(data), filename=filename)
+        file_ = {"path":FilePath, "filename":filename}
         send_task = asyncio.ensure_future(self.bomb.channel.send(text, file=file_, embed=embed))
         if self.last_img is not None:
             delete_task = asyncio.ensure_future(self.last_img.delete())

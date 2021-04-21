@@ -4,6 +4,7 @@ except:
     raise Exception("Copy config.template to config.py and edit the values!")
 
 import discord
+import FakeDiscord
 import asyncio
 import logging
 import random
@@ -13,8 +14,9 @@ import traceback
 from bomb import Bomb
 
 async def cmd_help(channel, author, parts):
+    print(f"Help: {channel}")
     await channel.send(f"This bot simulates Keep Talking and Nobody Explodes bombs. Message the bot in DMs for solo play or collaborate in text channels.\n"
-        f"`{PREFIX}help`: Show this message\n"
+        f"`{PREFIX}help --sim`: Show this message\n"
         f"`{PREFIX}bombs`: List the currently running bombs.\n"
         f"`{PREFIX}run ...`: Start a bomb. Pass no parameters for usage.\n"
         f"`{PREFIX}modules`: When a bomb is running, show the modules that have not been solved yet. When a bomb is not running, show a list of implemented modules.\n"
@@ -43,16 +45,12 @@ logging.basicConfig(level=logging.INFO)
 client = discord.Client()
 Bomb.client = client
 
-@client.event
-async def on_ready():
-    print('Logged in:', client.user.id, client.user.name)
-    await Bomb.update_presence()
-
 UNICODE_TRANSLATION_TABLE = {ord(x): "'" for x in "`\u2018\u2019\u2032"}
 
-@client.event
+@FakeDiscord.OnMessage
 async def on_message(msg):
-    if not isinstance(msg.channel, discord.channel.DMChannel) and msg.channel.id not in ALLOWED_CHANNELS: return
+    print(f"Got message: {msg.content}")
+    #if not isinstance(msg.channel, discord.channel.DMChannel) and msg.channel.id not in ALLOWED_CHANNELS: return
     if not msg.content.startswith(PREFIX): return
 
     parts = msg.content[len(PREFIX):].translate(UNICODE_TRANSLATION_TABLE).strip().split()
@@ -80,6 +78,7 @@ async def on_message(msg):
         elif command in GENERIC_COMMANDS:
             await GENERIC_COMMANDS[command](channel, author, parts)
         elif command.isdigit() or command in Bomb.COMMANDS:
+            print(Bomb.bombs)
             if channel in Bomb.bombs:
                 await Bomb.bombs[channel].handle_command(command, author, parts)
             else:
@@ -90,4 +89,4 @@ async def on_message(msg):
         await channel.send(f"{author.mention} An unidentified ~~flying object~~ error has occured during handling of this command. Please get the log for this bomb to one of our code monkeys, along with a description of what you did to cause this")
         print(f"Exception in {channel}:\n{traceback.format_exc()}")
 
-client.run(TOKEN)
+FakeDiscord.Start()

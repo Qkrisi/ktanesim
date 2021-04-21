@@ -1,6 +1,10 @@
 # the bot token you want the bot to use
 TOKEN = "eGfyrI1UWu-FyPy9kdBzE1xl.HEscxt.vBNq9p6BO2Y0eFRcI9A7ppfol1O"
 
+# For WebSocket server
+HOST = "localhost"
+PORT = 5004
+
 # print all log messages to stdout and don't upload the log to hastebin
 DEBUG_MODE = False
 
