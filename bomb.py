@@ -379,7 +379,7 @@ class Bomb:
 
         if len(claimed) > MAX_CLAIMED_LIST_SIZE:
             claimed = random.sample(claimed, MAX_CLAIMED_LIST_SIZE)
-            unclaimed.sort(key=lambda module: module.ident)
+            claimed.sort(key=lambda module: module.ident)
 
         for module in claimed:
             reply += f"\n{module} - claimed by {module.claim}"
