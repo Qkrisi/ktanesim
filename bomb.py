@@ -25,7 +25,7 @@ class Bomb:
         self.serial = self._randomize_serial()
 
         self.FileRoot = os.path.dirname(os.path.realpath(__file__))
-        self.LogOut = f"{self.FileRoot}/../logs"
+        self.LogOut = f"{self.FileRoot}/logs"
         if not os.path.isdir(self.LogOut): os.mkdir(self.LogOut)
 
         self.edgework = []
