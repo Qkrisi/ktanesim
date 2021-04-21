@@ -1,4 +1,5 @@
 import io
+import os
 import sys
 import time
 import random
@@ -22,6 +23,10 @@ class Bomb:
         self.strikes = 0
         self.start_time = time.monotonic()
         self.serial = self._randomize_serial()
+
+        self.FileRoot = os.path.dirname(os.path.realpath(__file__))
+        self.LogOut = f"{self.FileRoot}/../logs"
+        if not os.path.isdir(self.LogOut): os.mkdir(self.LogOut)
 
         self.edgework = []
         for _ in range(5):
@@ -222,7 +227,11 @@ class Bomb:
                 logurl = f"Hastebin log upload failed with exception, uploading to discord: ```\n{traceback.format_exc()}```"
 
         if discord_upload:
-            file_ = discord.File(io.StringIO(log), filename='ktanesim.log')
+            index = len(os.listdir(self.LogOut))+1
+            filename = f"ktanesim_bomb{index}.log"
+            filepath = f"{self.LogOut}/filename"
+            with open(filepath, "w") as file:file.write(log)
+            file_ = {"path":filepath, "filename":filename}
         else:
             file_ = None
 
