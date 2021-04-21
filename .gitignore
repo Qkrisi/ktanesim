@@ -5,3 +5,4 @@ leaderboard.dat
 target
 .env
 venv
+_sqlite3.so
