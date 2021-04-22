@@ -214,6 +214,7 @@ class Bomb:
             try:
                 async with self.hastebin_session.post('https://hastebin.com/documents', data=log.encode()) as resp:
                     decoded = await resp.json()
+                    print(decoded)
                     if 'key' in decoded:
                         logurl = f"Log: https://hastebin.com/{decoded['key']}.txt"
                         discord_upload = False
@@ -229,7 +230,7 @@ class Bomb:
         if discord_upload:
             index = len(os.listdir(self.LogOut))+1
             filename = f"ktanesim_bomb{index}.log"
-            filepath = f"{self.LogOut}/filename"
+            filepath = f"{self.LogOut}/{filename}"
             with open(filepath, "w") as file:file.write(log)
             file_ = {"path":filepath, "filename":filename}
         else:
