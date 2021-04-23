@@ -28,6 +28,11 @@ class IndicatorWidget:
     def __str__(self):
         return ('*' if self.lit else '') + self.code.name
 
+class BatteryType(enum.Enum):
+    Any = 0
+    D = 1
+    AA = 2
+
 class PortType(enum.Enum):
     Serial = enum.auto()
     Parallel = enum.auto()

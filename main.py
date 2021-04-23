@@ -36,6 +36,8 @@ async def cmd_help(channel, author, parts):
         f"`{PREFIX}detonate`: If other players agree, detonate the bomb.\n"
         f"`{PREFIX}leaderboard [<page number>]`, alias `{PREFIX}lb`: Show the leaderboard, {LEADERBOARD_PAGE_SIZE} items per page. Defaults to the first page.\n"
         f"`{PREFIX}rank`: Shows your leaderboard entry.\n"
+        "\n"
+        "Original KTaNE Simulator by NieDzejkob#2571"
         )
 
 async def cmd_invite(channel, author, parts):

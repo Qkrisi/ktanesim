@@ -6,6 +6,7 @@ import random
 import asyncio
 import aiohttp
 import discord
+import config
 import modules
 import edgework
 import traceback
@@ -36,6 +37,18 @@ class Bomb:
         random.shuffle(modules)
         for index, module in enumerate(modules):
             self.modules.append(module(self, index + 1))
+
+    @property
+    def strike_count(self):return self.strikes
+
+    @property
+    def starting_time(self):return self.start_time
+
+    @property
+    def serial_number(self):return self.serial
+
+    @property
+    def module_count(self):return len(self.modules)
 
     @staticmethod
     async def update_presence():
@@ -255,28 +268,69 @@ class Bomb:
             log.append(module.get_log())
         return '\n\n'.join(log)
 
+    def FilterModules(self, func, output):
+        return [output(module) for module in self.modules if func(module)]
+
     def get_claims(self, user):
-        return [module for module in self.modules if not module.solved and module.claim is not None and module.claim.id == user.id]
+        return self.FilterModules(lambda module: not module.solved and module.claim is not None and module.claim.id == user.id, lambda module: module)
+
+    def get_module_names(self):
+        return self.FilterModules(lambda module: True, lambda module: module.display_name)
+
+    def get_solved_module_names(self):
+        return self.FilterModules(lambda module: module.solved, lambda module: module.display_name)
 
     def get_widgets(self, type_):
         return list(filter(lambda widget: type(widget) is type_, self.edgework))
 
-    def get_battery_count(self):
-        return sum(widget.battery_count for widget in self.get_widgets(edgework.BatteryWidget))
+    def get_battery_count(self, filter = edgework.BatteryType.Any):
+        assert isinstance(filter, edgework.BatteryType)
+        return sum(widget.battery_count for widget in self.get_widgets(edgework.BatteryWidget) if filter.value==0 or widget.battery_count==filter.value)
 
     def get_holder_count(self):
         return len(self.get_widgets(edgework.BatteryWidget))
 
+    def FilterIndicators(self, func):
+        return [indicator for indicator in self.get_widgets(edgework.IndicatorWidget) if func(indicator)]
+
+    def get_indicators(self):
+        return self.FilterIndicators(lambda indicator: True)
+
+    def get_lit_indicators(self):
+        return self.FilterIndicators(lambda indicator: indicator.lit)
+
+    def get_unlit_indicators(self):
+        return self.FilterIndicators(lambda indicator: not indicator.lit)
+
     def get_indicator(self, code):
         assert isinstance(code, edgework.Indicator)
-        for indicator in self.get_widgets(edgework.IndicatorWidget):
+        for indicator in self.get_indicators():
             if indicator.code == code:
                 return indicator.lit
         return None
 
+    def get_port_plates(self):
+        return self.get_widgets(edgework.PortPlateWidget)
+
+    def get_plate_count(self):
+        return len(self.get_port_plates())
+
+    def get_ports(self):
+        p = []
+        for plate in self.get_port_plates():
+            p+=[port.name for port in plate.ports]
+        return p
+
+    def port_count(self, port_type = None):
+        assert port_type is None or isinstance(port_type, edgework.PortType)
+        s = 0
+        for plate in self.get_port_plates():
+            s+=len(plate.ports) if port_type is None else plate.ports.count(port_type)
+        return s
+
     def has_port(self, port_type):
         assert isinstance(port_type, edgework.PortType)
-        for plate in self.get_widgets(edgework.PortPlateWidget):
+        for plate in self.get_port_plates():
             if port_type in plate.ports:
                 return True
         return False
@@ -314,7 +368,7 @@ class Bomb:
         return '{:d}:{:02d}:{:02d}'.format(hours, minutes, seconds)
 
     def get_solved_count(self):
-        return sum(module.solved for module in self.modules)
+        return len(self.get_solved_module_names())
 
     def _randomize_serial(self):
         def get_any():
