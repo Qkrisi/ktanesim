@@ -335,10 +335,7 @@ class Bomb:
 
     def has_port(self, port_type):
         assert isinstance(port_type, edgework.PortType)
-        for plate in self.get_port_plates():
-            if port_type in plate.ports:
-                return True
-        return False
+        return self.port_count(port_type) > 0
 
     def has_vowel(self):
         for vowel in "AEIOU":
