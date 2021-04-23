@@ -2,26 +2,34 @@
 
 A Discord bot that simulates Keep Talking and Nobody Explodes bombs.
 
+Visit the [wiki page](https://github.com/Qkrisi/ktanesim/wiki) to see how to add new modules.
+
 ## Setup
 
- - Make sure you've got Python 3 and virtualenv installed.
- - Create a Python 3 virtual environment.
- ```
- $ virtualenv venv
- ```
- - Activate the environment and install the dependencies.
- ```
- $ . venv/bin/activate
- (venv) $ pip install -r requirements.txt
- ```
- - Configure the bot
- ```
- $ cp config.template config.py
- $ vi config.py
- [ ... ]
- ```
- - Pray to deity of choice.
- - Run the bot
- ```
- python main.py
- ```
+Requirements:
+
+```
+Python 3.6+
+SQLite 3.24+
+discord.py
+cairosvg
+Wand
+```
+
+ -Clone the [KTaNE Bot repository](https://github.com/qkrisi/ktanecord) and set it up according to its [README](https://github.com/Qkrisi/ktanecord/blob/master/README.md).
+ 
+ -Create a copy of the `config.template` file and rename it to `config.py`
+ 
+ -Open the `config.py` file and modify the values in it.
+ 
+ These config fields should be the same in both:
+ 
+ | Name in ktanesim | Name in the KTaNE Bot |
+ | -- | -- |
+ | PREFIX | token |
+ | HOST | tpServerIP |
+ | PORT | SimPort |
+
+-Execute the `main.py` file
+
+-Start the KTaNE bot (`node src/main.js` in the cloned KTaNE Bot repo)

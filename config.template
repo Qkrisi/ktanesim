@@ -1,22 +1,23 @@
-# the bot token you want the bot to use
-TOKEN = "eGfyrI1UWu-FyPy9kdBzE1xl.HEscxt.vBNq9p6BO2Y0eFRcI9A7ppfol1O"
-
-# For WebSocket server
+#WebSocket server arguments
 HOST = "localhost"
-PORT = 5004
+PORT = 5000
 
 # print all log messages to stdout and don't upload the log to hastebin
 DEBUG_MODE = False
 
-HASTEBIN_TIMEOUT = 5
+#OnPointCoding stuff
+USE_OPC = False
+OPC_TIMEOUT = 5
+OPC_ID = "0"
+OPC_SECRET = "secret"
 
 # numeric IDs of the text channels you want the bot to listen in
-ALLOWED_CHANNELS = [156302293923752856, 659213955513657646]
+ALLOWED_CHANNELS = [768478117441306694]
 
 # the character a message must start with to be interpreted by the bot
-PREFIX = '!'
+PREFIX = '.'
 
-BOT_OWNER = 4622263691306982823
+BOT_OWNER = 345587926681518080
 LEADERBOARD_PAGE_SIZE = 20
 MAX_FOUND_LIST_SIZE = 20
 MAX_UNCLAIMED_LIST_SIZE = 20
