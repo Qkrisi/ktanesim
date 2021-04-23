@@ -15,7 +15,7 @@ from config import *
 class Bomb:
     SERIAL_NUMBER_CHARACTERS = "ABCDEFGHIJKLMNEPQRSTUVWXZ0123456789"
     bombs = {}
-    hastebin_session = None
+    opc_session = None
     client = None
     shutdown_mode = False
 
@@ -213,36 +213,41 @@ class Bomb:
         await Bomb.update_presence()
 
     async def bomb_end(self, boom=False):
-        if Bomb.hastebin_session is None:
-            Bomb.hastebin_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=HASTEBIN_TIMEOUT))
+        if Bomb.opc_session is None and config.USE_OPC:
+            Bomb.opc_session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=OPC_TIMEOUT))
 
         send_first_message_coro = asyncio.ensure_future(self.channel.send(f"{':boom:' if boom else ''} The bomb has been {'**detonated**' if boom else 'defused'} after {self.get_time_formatted()} and {self.strikes} strike{'s' if self.strikes != 1 else ''}."))
 
         discord_upload = True
         log = self.get_log()
-
+        index = len(os.listdir(self.LogOut)) + 1
+        filename = f"ktanesim_bomb{index}.log"
         if DEBUG_MODE:
-            logurl = f"Debug mode enabled - uploading log to discord instead of hastebin"
-        else:
+            logurl = f"Debug mode enabled - uploading log to discord instead of OPC"
+        elif config.USE_OPC:
             try:
-                async with self.hastebin_session.post('https://hastebin.com/documents', data=log.encode()) as resp:
+                async with self.opc_session.post('https://api.onpointcoding.net/v1/logs', json={
+                    "action":"add",
+                    "log_filename":filename,
+                    "client_id":config.OPC_ID,
+                    "client_secret":config.OPC_SECRET,
+                    "log_data":log
+                }) as resp:
                     decoded = await resp.json()
                     print(decoded)
                     if 'key' in decoded:
                         logurl = f"Log: https://hastebin.com/{decoded['key']}.txt"
                         discord_upload = False
                     elif 'message' in decoded:
-                        logurl = f"Hastebin log upload failed with error message, uploading to discord: `{decoded['message']}`"
+                        logurl = f"OPC log upload failed with error message, uploading to discord: `{decoded['message']}`"
                     else:
-                        logurl = f"Hastebin log upload failed with no error message, uploading to discord: `{repr(decoded)}`"
+                        logurl = f"OPC log upload failed with no error message, uploading to discord: `{repr(decoded)}`"
             except asyncio.TimeoutError:
-                logurl = f"Hastebin log upload failed with timeout, uploading to discord:"
+                logurl = f"OPC log upload failed with timeout, uploading to discord:"
             except Exception:
-                logurl = f"Hastebin log upload failed with exception, uploading to discord: ```\n{traceback.format_exc()}```"
+                logurl = f"OPC log upload failed with exception, uploading to discord: ```\n{traceback.format_exc()}```"
 
         if discord_upload:
-            index = len(os.listdir(self.LogOut))+1
-            filename = f"ktanesim_bomb{index}.log"
             filepath = f"{self.LogOut}/{filename}"
             with open(filepath, "w") as file:file.write(log)
             file_ = {"path":filepath, "filename":filename}
