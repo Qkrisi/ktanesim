@@ -50,6 +50,9 @@ async def cmd_implement(channel, author, parts):
                        f"Documentation: <https://github.com/Qkrisi/ktanesim/wiki>\n"
                        f"If you need any help, join the KTaNE Bot server: <https://discord.gg/gJVy2Rt>")
 
+async def cmd_allbombs(channel, author, parts):
+    await channel.send(str(len(Bomb.bombs)))
+
 logging.basicConfig(level=logging.INFO)
 client = discord.Client()
 Bomb.client = client
@@ -78,7 +81,8 @@ async def on_message(msg):
             "rank": leaderboard.cmd_rank,
             "help": cmd_help,
             "invite": cmd_invite,
-            "implement":cmd_implement
+            "implement":cmd_implement,
+            "allbombs":cmd_allbombs
         }
 
         if command == "modules":
