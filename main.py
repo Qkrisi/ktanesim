@@ -63,7 +63,8 @@ async def on_message(msg):
     if not msg.content.startswith(PREFIX): return
 
     parts = msg.content[len(PREFIX):].translate(UNICODE_TRANSLATION_TABLE).strip().split()
-    command = parts.pop(0).lower()
+    try:command = parts.pop(0).lower()
+    except:return
     channel = msg.channel
     author = msg.author
 
