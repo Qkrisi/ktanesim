@@ -2,7 +2,7 @@
 HOST = "localhost"
 PORT = 5000
 
-# print all log messages to stdout and don't upload the log to hastebin
+# print all log messages to stdout and don't upload the log to OPC
 DEBUG_MODE = False
 
 #OnPointCoding stuff
@@ -10,9 +10,6 @@ USE_OPC = False
 OPC_TIMEOUT = 5
 OPC_ID = "0"
 OPC_SECRET = "secret"
-
-# numeric IDs of the text channels you want the bot to listen in
-ALLOWED_CHANNELS = [768478117441306694]
 
 # the character a message must start with to be interpreted by the bot
 PREFIX = '.'

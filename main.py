@@ -36,12 +36,20 @@ async def cmd_help(channel, author, parts):
         f"`{PREFIX}detonate`: If other players agree, detonate the bomb.\n"
         f"`{PREFIX}leaderboard [<page number>]`, alias `{PREFIX}lb`: Show the leaderboard, {LEADERBOARD_PAGE_SIZE} items per page. Defaults to the first page.\n"
         f"`{PREFIX}rank`: Shows your leaderboard entry.\n"
-        "\n"
-        "Original KTaNE Simulator by NieDzejkob#2571"
+        f"`{PREFIX}implement`: Shows information about implementing a module."
+        f"\n"
+        f"\n"
+        f"Original KTaNE Simulator by NieDzejkob#2571, now maintained by Qkrisi#4982"
         )
 
 async def cmd_invite(channel, author, parts):
-    await channel.send("Here's one: https://discord.gg/VKwePp9")
+    await channel.send("Here's one: https://discord.gg/gJVy2Rt")
+
+async def cmd_implement(channel, author, parts):
+    await channel.send(f"If you have some Python and SVG knowledge, feel free to submit a pull request to <https://github.com/Qkrisi/ktanesim> adding new modules.\n"
+                       f"Setup help: <https://github.com/Qkrisi/ktanesim/blob/master/README.md>\n"
+                       f"Documentation: <https://github.com/Qkrisi/ktanesim/wiki>\n"
+                       f"If you need any help, join the KTaNE Bot server: <https://discord.gg/gJVy2Rt>")
 
 logging.basicConfig(level=logging.INFO)
 client = discord.Client()
@@ -70,6 +78,7 @@ async def on_message(msg):
             "rank": leaderboard.cmd_rank,
             "help": cmd_help,
             "invite": cmd_invite,
+            "implement":cmd_implement
         }
 
         if command == "modules":
@@ -85,8 +94,8 @@ async def on_message(msg):
                 await Bomb.bombs[channel].handle_command(command, author, parts)
             else:
                 await channel.send(f"{author.mention} No bomb is currently ticking in this channel. Change this sad fact with `{PREFIX}run`.")
-        else:
-            await channel.send(f"{author.mention} No such command: `{PREFIX}{command}`. Did you miss the module number? Try `{PREFIX}help` for help.")
+        #else:
+            #await channel.send(f"{author.mention} No such command: `{PREFIX}{command}`. Did you miss the module number? Try `{PREFIX}help` for help.")
     except Exception:
         await channel.send(f"{author.mention} An unidentified ~~flying object~~ error has occured during handling of this command. Please get the log for this bomb to one of our code monkeys, along with a description of what you did to cause this")
         print(f"Exception in {channel}:\n{traceback.format_exc()}")

@@ -341,7 +341,6 @@ class Bomb:
         for vowel in "AEIOU":
             if vowel in self.serial:
                 return True
-
         return False
 
     def get_edgework(self):
