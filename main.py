@@ -36,8 +36,7 @@ async def cmd_help(channel, author, parts):
         f"`{PREFIX}detonate`: If other players agree, detonate the bomb.\n"
         f"`{PREFIX}leaderboard [<page number>]`, alias `{PREFIX}lb`: Show the leaderboard, {LEADERBOARD_PAGE_SIZE} items per page. Defaults to the first page.\n"
         f"`{PREFIX}rank`: Shows your leaderboard entry.\n"
-        f"`{PREFIX}implement`: Shows information about implementing a module."
-        f"\n"
+        f"`{PREFIX}implement`: Shows information about implementing a module.\n"
         f"\n"
         f"Original KTaNE Simulator by NieDzejkob#2571, now maintained by Qkrisi#4982"
         )
