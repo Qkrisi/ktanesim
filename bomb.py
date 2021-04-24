@@ -104,7 +104,7 @@ class Bomb:
             f"For example:\n - `{PREFIX}run 7 vanilla` - 7 random vanilla modules\n"
             f" - `{PREFIX}run 12 mixed -souvenir -theCube` - 12 modules, half of them being vanilla. "
             f"Souvenir and The Cube modules will not be generated\n"
-            f" - `{PREFIX}run marbleTumble*3` - three Marble Tumble modules and nothing else\n"
+            f" - `{PREFIX}run keypad*3` - three Keypad modules and nothing else\n"
             f" - `{PREFIX}run complicatedWires morseCode 3Dmaze*2` - four modules: Complicated Wires, Morse Code, and two 3D Mazes.\n"
             f"Use `{PREFIX}modules` to see the implemented modules.\nAvailable distributions:")
 
