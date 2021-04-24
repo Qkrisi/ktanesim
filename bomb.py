@@ -255,7 +255,7 @@ class Bomb:
             file_ = None
 
         await asyncio.gather(send_first_message_coro)
-        await self.channel.send(logurl, file=file_)
+        await self.channel.send(logurl if config.USE_OPC else "", file=file_)
         del Bomb.bombs[self.channel]
         if Bomb.shutdown_mode and not Bomb.bombs:
             owner_user = discord.utils.find(lambda u: u.id == BOT_OWNER, Bomb.client.users)
