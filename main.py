@@ -93,7 +93,6 @@ async def on_message(msg):
         elif command in GENERIC_COMMANDS:
             await GENERIC_COMMANDS[command](channel, author, parts)
         elif command.isdigit() or command in Bomb.COMMANDS:
-            print(Bomb.bombs)
             if channel in Bomb.bombs:
                 await Bomb.bombs[channel].handle_command(command, author, parts)
             else:

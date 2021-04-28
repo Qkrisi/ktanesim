@@ -1,6 +1,7 @@
 import io
 import os
 import sys
+import json
 import time
 import random
 import asyncio
@@ -226,22 +227,20 @@ class Bomb:
             logurl = f"Debug mode enabled - uploading log to discord instead of OPC"
         elif config.USE_OPC:
             try:
-                async with self.opc_session.post('https://api.onpointcoding.net/v1/logs', json={
-                    "action":"add",
-                    "log_filename":filename,
-                    "client_id":config.OPC_ID,
-                    "client_secret":config.OPC_SECRET,
-                    "log_data":log
+                async with self.opc_session.post('https://api.onpointcoding.net/v2/logs', json={
+                    "client_id": config.OPC_ID,
+                    "client_secret": config.OPC_SECRET,
+                    "log_data": log,
+                    "log_format": "raw",
+                    "log_filename": filename
                 }) as resp:
-                    decoded = await resp.json()
-                    print(decoded)
-                    if 'key' in decoded:
-                        logurl = f"Log: https://hastebin.com/{decoded['key']}.txt"
+                    decoded = json.loads(await resp.text())
+                    if not decoded["error"]:
+                        logurl = f"Log: https://logs.onpointcoding.net/file/{config.OPC_ID}/{decoded['log_id']}.log"
                         discord_upload = False
-                    elif 'message' in decoded:
-                        logurl = f"OPC log upload failed with error message, uploading to discord: `{decoded['message']}`"
                     else:
-                        logurl = f"OPC log upload failed with no error message, uploading to discord: `{repr(decoded)}`"
+                        error_message = "\n".join(decoded["error"])
+                        logurl = f"OPC log upload failed with no error message, uploading to discord: `{error_message}`"
             except asyncio.TimeoutError:
                 logurl = f"OPC log upload failed with timeout, uploading to discord:"
             except Exception:
