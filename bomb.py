@@ -240,6 +240,7 @@ class Bomb:
                         discord_upload = False
                     else:
                         error_message = "\n".join(decoded["error"])
+                        print(f"OPC error: {error_message}")
                         logurl = f"OPC log upload failed with no error message, uploading to discord: `{error_message}`"
             except asyncio.TimeoutError:
                 logurl = f"OPC log upload failed with timeout, uploading to discord:"
