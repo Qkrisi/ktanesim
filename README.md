@@ -9,7 +9,7 @@ Visit the [wiki page](https://github.com/Qkrisi/ktanesim/wiki) to see how to add
 Requirements:
 
 ```
-Python 3.6+
+Python 3.8+
 SQLite 3.24+
 discord.py
 cairosvg
