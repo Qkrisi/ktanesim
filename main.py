@@ -11,6 +11,7 @@ import random
 import leaderboard
 import modules
 import traceback
+import BombSettings
 from bomb import Bomb
 
 async def cmd_help(channel, author, parts):
@@ -36,6 +37,7 @@ async def cmd_help(channel, author, parts):
         f"`{PREFIX}detonate`: If other players agree, detonate the bomb.\n"
         f"`{PREFIX}leaderboard [<page number>]`, alias `{PREFIX}lb`: Show the leaderboard, {LEADERBOARD_PAGE_SIZE} items per page. Defaults to the first page.\n"
         f"`{PREFIX}rank`: Shows your leaderboard entry.\n"
+        f"`{PREFIX}settings`: Shows information about bomb settings.\n"
         f"`{PREFIX}implement`: Shows information about implementing a module.\n"
         f"\n"
         f"Original KTaNE Simulator by NieDzejkob#2571, now maintained by Qkrisi#4982"
@@ -81,8 +83,9 @@ async def on_message(msg):
             "rank": leaderboard.cmd_rank,
             "help": cmd_help,
             "invite": cmd_invite,
-            "implement":cmd_implement,
-            "allbombs":cmd_allbombs
+            "implement": cmd_implement,
+            "allbombs": cmd_allbombs,
+            "settings": BombSettings.cmd_settings
         }
 
         if command == "modules":

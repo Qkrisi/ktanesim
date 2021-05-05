@@ -8,7 +8,8 @@ class User:
         self.tag = f"{username}#{discriminator}"
         self.mention = f"<@{id}>"
 
-    def __str__(self):return self.tag
+    def __str__(self):
+        return self.tag
 
 class Channel:
     def __init__(self, socket, id, **kwargs):

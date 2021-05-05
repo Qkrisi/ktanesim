@@ -11,6 +11,7 @@ import config
 import modules
 import edgework
 import traceback
+import BombSettings
 from config import *
 
 class Bomb:
@@ -22,6 +23,7 @@ class Bomb:
 
     def __init__(self, channel, modules):
         self.channel = channel
+        self.settings = BombSettings.get_settings(channel.id, True)
         self.strikes = 0
         self.start_time = time.monotonic()
         self.serial = self._randomize_serial()
