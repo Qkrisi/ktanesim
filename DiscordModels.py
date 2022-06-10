@@ -15,6 +15,9 @@ class Channel:
     def __init__(self, socket, id, **kwargs):
         self.socket = socket
         self.id = id
+    
+    def __str__(self):
+        return str(self.id)
 
     async def send(self, msg, file=None, embed=None):
         await self.socket.send(dumps({"id":self.id, "message":msg, "file":file, "embed":embed}))
