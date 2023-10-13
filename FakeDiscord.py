@@ -31,6 +31,7 @@ async def HandleSocket(websocket, path):
 
 
 def Start():
+    print(f"Running on port {port}")
     asyncio.get_event_loop().run_until_complete(websockets.serve(HandleSocket, host, port))
     asyncio.get_event_loop().run_forever()
 

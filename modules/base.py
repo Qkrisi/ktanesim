@@ -168,7 +168,8 @@ class Module(metaclass=CommandConsolidator):
 
     async def do_view(self, text, strike=False):
         start_time = time.time()
-        data, filename = await self.bomb.client.loop.run_in_executor(None, self.render, strike)
+        async with self.bomb.client:
+            data, filename = await self.bomb.client.loop.run_in_executor(None, self.render, strike)
         end_time = time.time()
         print("Rendering took {:.2}s".format(end_time - start_time))
         FilePath = f"{self.RenderOut}/{filename}"

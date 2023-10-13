@@ -56,7 +56,9 @@ async def cmd_allbombs(channel, author, parts):
     await channel.send(str(len(Bomb.bombs)))
 
 logging.basicConfig(level=logging.INFO)
-client = discord.Client()
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
 Bomb.client = client
 
 UNICODE_TRANSLATION_TABLE = {ord(x): "'" for x in "`\u2018\u2019\u2032"}

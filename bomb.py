@@ -247,7 +247,7 @@ class Bomb:
             except asyncio.TimeoutError:
                 logurl = f"OPC log upload failed with timeout, uploading to discord:"
             except Exception:
-                logurl = f"OPC log upload failed with exception, uploading to discord: ```\n{traceback.format_exc()}```"
+                logurl = f"OPC log upload failed with exception, uploading to discord:"
 
         if discord_upload:
             filepath = f"{self.LogOut}/{filename}"
